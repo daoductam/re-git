@@ -23,4 +23,8 @@ public class Hotel {
     @Transient
     private Integer rate;//1-5star
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id",referencedColumnName ="id" )
+    private Address address;
+
 }

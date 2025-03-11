@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     Hotel findByHotelId(Long hotelId);
+
+    Hotel findByHotelName(String hotelName);
 }

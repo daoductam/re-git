@@ -15,7 +15,7 @@ import java.util.List;
 public class HotelService {
 
     @Autowired
-    HotelRepository hotelRepository;
+    HotelRepository hotelRepository;// CREATED in IoC Container
 
     public Hotel getHotelById(Long id) {
         return hotelRepository.findByHotelId(id);
