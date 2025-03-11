@@ -5,6 +5,8 @@ import com.tamdao.api1.dto.CreateHotelRequest;
 import com.tamdao.api1.dto.ResponseDto;
 import com.tamdao.api1.dto.UpdateHotelRequest;
 import com.tamdao.api1.entity.Hotel;
+import com.tamdao.api1.service.HotelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,18 +19,16 @@ public class HotelController {
 
     private static List<Hotel> hotels = new ArrayList<>();
 
+    @Autowired
+    HotelService hotelService;
+
     // 1. Tao hotel
     // Method: Post
     // Path: hotels
     @PostMapping
     public Hotel createHotel(@RequestBody CreateHotelRequest request) {
-        Hotel hotel= new Hotel();
-        hotel.setHotelId(request.getHotelId());
-        hotel.setHotelName(request.getHotelName());
-        hotel.setRate(request.getRate());
-        hotels.add(hotel);
 
-        return hotel;
+        return hotelService.createHotel(request);
     }
 
     // 2. lay dan sach hotel
@@ -38,15 +38,8 @@ public class HotelController {
     @GetMapping
     public List<Hotel> getHotels(@RequestParam(required = false) Integer rate,
                                  @RequestParam(required = false) Boolean status) {//nullable
-         if (rate != null && status==null) {
-            return findHotelsByRate(rate);
-            
-         } else if (rate == null && status!=null) {
-             return findHotelsByStatus(status);
-         } else if (rate != null && status !=null) {
-             return findHotelsByStatusAndRate(status, rate);
-         }
-        return hotels;
+
+        return hotelService.getAll();
     }
 
     List<Hotel> findHotelsByRate(Integer rate) {
@@ -88,26 +81,29 @@ public class HotelController {
     // Method: Get
     // Path /api/v1/hotel/<hotel_id>
     @GetMapping("/{hotelId}")
-    public Hotel getHotel(@PathVariable String hotelId) {
+    public Hotel getHotel(@PathVariable Long hotelId) {
 
-        return findHotelById(hotelId);
+//        return findHotelById(hotelId);
+        return hotelService.getHotelById(hotelId);
     }
 
     // 4. Cap nhat hotel
     // Method: PUT
     //Path: /api/v1/hotels/<hotel-id>
     @PutMapping("/{hotelId}")
-    public Hotel updateHotel(@PathVariable String hotelId,
+    public Hotel updateHotel(@PathVariable Long hotelId,
                              @RequestBody UpdateHotelRequest request) {
-        Hotel hotel = findHotelById(hotelId);
-        if (hotel == null) {
-            return null;
-        }
+//        Hotel hotel = findHotelById(hotelId);
+//        if (hotel == null) {
+//            return null;
+//        }
+//
+//        hotel.setHotelName(request.getHotelName());
+//        hotel.setStatus(request.isStatus());
+//
+//        return hotel;
 
-        hotel.setHotelName(request.getHotelName());
-        hotel.setStatus(request.isStatus());
-
-        return hotel;
+        return hotelService.updateHotel(hotelId, request);
     }
 
     //5 Vo hieu hoa 1 hotel
@@ -117,22 +113,26 @@ public class HotelController {
     //
 
     @DeleteMapping("/{hotelId}")
-    public ResponseDto disableHotel(@PathVariable String hotelId) {
-        Hotel hotel = findHotelById(hotelId);
-        if (hotel == null) {
-            return new ResponseDto(false, "Hotel Not Found");
-        }
-        hotel.setStatus(false);
-        return new ResponseDto(true, "successful");
+    public ResponseDto disableHotel(@PathVariable long hotelId) {
+//        Hotel hotel = findHotelById(hotelId);
+//        if (hotel == null) {
+//            return new ResponseDto(false, "Hotel Not Found");
+//        }
+//        hotel.setStatus(false);
+//        return new ResponseDto(true, "successful");
+
+        return hotelService.disableHotel(hotelId);
     }
 
-    private Hotel findHotelById(String hotelId) {
+    private Hotel findHotelById(long hotelId) {
         for (Hotel hotel: hotels) {
-            if (hotel.getHotelId().equals(hotelId)) {
+            if (hotel.getHotelId() == hotelId) {
                 return hotel;
             }
         }
         return null;
     }
+
+
 
 }

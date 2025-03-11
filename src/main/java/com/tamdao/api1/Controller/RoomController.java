@@ -96,9 +96,9 @@ public class RoomController {
 
         return null;
     }
-    // 4. Cap nhat room
-    // Method: PUT
-    //Path: /api/v1/room/<room-id>
+        // 4. Cap nhat room
+        // Method: PUT
+        //Path: /api/v1/room/<room-id>
 
     @PutMapping("/{roomId}")
     public Room updateRoom(@PathVariable String roomId,

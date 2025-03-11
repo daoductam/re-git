@@ -1,10 +1,9 @@
-package com.tamdao.api1.entity;
+package com.tamdao.api1.dto;
 
 import lombok.Data;
 
 @Data
-public class Staff {
-    private String staffId;
+public class updateStaffRequest {
     private String name;
     private String age;
     private String email;
